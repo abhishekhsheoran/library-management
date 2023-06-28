@@ -14,6 +14,5 @@ func main() {
 }
 
 func defaultHandler(w http.ResponseWriter, r *http.Request){
-	
 	w.Write([]byte("hello from library-management"))
 }
