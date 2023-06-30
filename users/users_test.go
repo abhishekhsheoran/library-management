@@ -30,12 +30,3 @@ func TestUsers(t *testing.T) {
 		t.Fail()
 	}
 }
-
-type mine struct {
-
-}
-
-
-func (m *mine) Read(b []byte) (int, error) {
-	return 0, nil
-}

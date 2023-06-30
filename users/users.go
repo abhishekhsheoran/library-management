@@ -27,9 +27,6 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "user name cannot be empty", http.StatusBadRequest)
 		return
 	}
-	b, err := json.Marshal(user)
-	log.Println("<<<<<<<<<<<<<<<", string(b))
-	log.Println("<<<<<<<<<<<<<<<", user)
 	if user.Contact == 0 {
 		http.Error(w, "user contact cannot be empty", http.StatusBadRequest)
 		return
