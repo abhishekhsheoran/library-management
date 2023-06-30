@@ -12,14 +12,14 @@ func TestUsers(t *testing.T) {
 	body :=
 		`
 	{
-		"NAME" :  "abhishek",
+		"Name" :  "abhishek",
 		"ID" : "Sheoran",
-		"contct": "0000"
+		"Contact": 9416749675
 	
 	}
 	`
 
-	request, err := http.NewRequest(http.MethodPost, "http.localhost:8080/kuch/bhi/", bytes.NewBuffer([]byte(body)))
+	request, err := http.NewRequest(http.MethodPost, "http.localhost:8080/api/v1/user/", bytes.NewBuffer([]byte(body)))
 	if err != nil {
 		log.Println("error occured in making request")
 	}
@@ -29,13 +29,4 @@ func TestUsers(t *testing.T) {
 		log.Println("response does not match", response.Result().StatusCode)
 		t.Fail()
 	}
-}
-
-type mine struct {
-
-}
-
-
-func (m *mine) Read(b []byte) (int, error) {
-	return 0, nil
 }
