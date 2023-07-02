@@ -21,3 +21,12 @@ func InitialiseDatabase() {
 		return
 	}
 }
+
+
+
+// collection 
+func GetCollection (inputCollection string)*mongo.Collection{
+	InitialiseDatabase()
+	collection :=Connection.Database(inputCollection).Collection(Users)
+	return collection
+}

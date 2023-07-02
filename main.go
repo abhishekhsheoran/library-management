@@ -11,7 +11,8 @@ import (
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", defaultHandler).Methods(http.MethodPost)
-	router.HandleFunc("/api/v1/users/", users.CreateUsers).Methods(http.MethodPost)
+	router.HandleFunc("/api/signUp/users/", users.CreateUsers).Methods(http.MethodPost)
+	router.HandleFunc("/login", users.SignInUser).Methods(http.MethodConnect)
 	log.Println(http.ListenAndServe(":8080", router))
 }
 
