@@ -25,8 +25,8 @@ func InitialiseDatabase() {
 
 
 // collection 
-func GetCollection ()*mongo.Collection{
+func GetCollection (inputCollection string)*mongo.Collection{
 	InitialiseDatabase()
-	collection :=Connection.Database(LMDB).Collection(Users)
+	collection :=Connection.Database(inputCollection).Collection(Users)
 	return collection
 }

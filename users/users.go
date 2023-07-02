@@ -45,7 +45,7 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, verifyResult, http.StatusBadRequest)
 		return
 	}
-	collection := utils.GetCollection()
+	collection := utils.GetCollection(utils.Users)
 	_, err = collection.InsertOne(context.TODO(), user)
 	if err != nil {
 		http.Error(w, "error occured during insertion of data", http.StatusInternalServerError)
@@ -58,7 +58,7 @@ func SignInUser(w http.ResponseWriter, r *http.Request) {
 	email := input["email"]
 	password := input["password"]
 	filter := bson.M{email: "email", password: "Password"}
-	collection := utils.GetCollection()
+	collection := utils.GetCollection(utils.Users)
 	findEmail := collection.FindOne(context.TODO(), email)
 	if findEmail.Err() != nil {
 		http.Error(w, "Invalid e-mail address", http.StatusBadRequest)
