@@ -61,17 +61,17 @@ func SignInUser(w http.ResponseWriter, r *http.Request) {
 	collection := utils.GetCollection(utils.Users)
 	findEmail := collection.FindOne(context.TODO(), email)
 	if findEmail.Err() != nil {
-		http.Error(w, "Invalid e-mail address", http.StatusBadRequest)
+		http.Error(w, "Invalid credentials", http.StatusBadRequest)
 		return
 	}
 	findPassword := collection.FindOne(context.TODO(), password)
 	if findPassword.Err() != nil {
-		http.Error(w, "Invalid password", http.StatusBadRequest)
+		http.Error(w, "Invalid credentials", http.StatusBadRequest)
 		return
 	}
 	findResult := collection.FindOne(context.TODO(), filter)
 	if findResult.Err() != nil {
-		http.Error(w, "email and password did not match ", http.StatusBadRequest)
+		http.Error(w, "Invalid credentials ", http.StatusBadRequest)
 		return
 	}
 	decodedResult, err := findResult.DecodeBytes()
@@ -80,4 +80,41 @@ func SignInUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write(decodedResult)
+}
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	input := mux.Vars(r)
+	Id := input["iD"]
+	collection := utils.GetCollection(utils.Users)
+	findResult := collection.FindOne(context.TODO(), Id)
+	if findResult.Err() != nil {
+		http.Error(w, "Unable to find the User data", http.StatusBadRequest)
+		return
+	}
+	var mongoUser models.User
+	err := findResult.Decode(&mongoUser)
+	if err != nil {
+		http.Error(w, "error occured during internal process", http.StatusInternalServerError)
+		return
+	}
+	var user models.User
+	err = json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		http.Error(w, "error occured during getting update attributes", http.StatusBadRequest)
+		return
+	}
+	switch user {
+	case user.Address != "":
+		mongoUser.Address = user.Address
+	case user.Password != "":
+		mongoUser.Password = user.Password
+	case user.Contact != 0:
+		mongoUser.Contact = user.Contact
+	}
+	_, err = collection.UpdateOne(context.TODO(), Id, mongoUser)
+	if err != nil {
+		http.Error(w, "error occured during updating the data", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
