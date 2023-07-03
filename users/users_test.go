@@ -51,9 +51,11 @@ func Test_signIn(t *testing.T) {
 func Test_updateUser(t *testing.T) {
 	body :=
 		`
-	"password" : "kuchbhi"
-	"contact": 0000
+		{
+	"password" : "kuchbhi",
+	"contact": 0000,
 	"email": "abhishek@sheoran.com"
+		}
 	`
 	req, err := http.NewRequest(http.MethodPatch, "http.localhost:8080/update/user/users", bytes.NewBuffer([]byte(body)))
 	if err != nil {
