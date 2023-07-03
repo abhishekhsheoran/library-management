@@ -13,6 +13,7 @@ func main() {
 	router.HandleFunc("/", defaultHandler).Methods(http.MethodPost)
 	router.HandleFunc("/api/signUp/users/", users.CreateUsers).Methods(http.MethodPost)
 	router.HandleFunc("/login", users.SignInUser).Methods(http.MethodConnect)
+	router.HandleFunc("/update/user/users", users.UpdateUser).Methods(http.MethodPatch)
 	log.Println(http.ListenAndServe(":8080", router))
 }
 
