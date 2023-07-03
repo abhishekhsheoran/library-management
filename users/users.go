@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"net/http/cookiejar"
 
 	"github.com/abhishekhsheoran/library-management/models"
 	"github.com/abhishekhsheoran/library-management/utils"
@@ -115,6 +114,25 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	_, err = collection.UpdateOne(context.TODO(), Id, mongoUser)
 	if err != nil {
 		http.Error(w, "error occured during updating the data", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	input := mux.Vars(r)
+	name := input["name"]
+	contact := input["contact"]
+	filter := bson.M{name: "name", contact: "contact"}
+	collection := utils.GetCollection(utils.Users)
+	findResult := collection.FindOne(context.TODO(), filter)
+	if findResult.Err() != nil {
+		http.Error(w, "error occured during finding the data", http.StatusInternalServerError)
+		return
+	}
+	_, err := collection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		http.Error(w, "error occured during deleting the record", http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
