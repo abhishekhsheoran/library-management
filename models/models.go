@@ -2,7 +2,6 @@ package models
 
 import (
 	"time"
-
 )
 
 type Address struct {
@@ -22,4 +21,11 @@ type User struct {
 	Role      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
+}
+
+type Book struct {
+	Name      string
+	Auther    string
+	IssuedBy  []string
+	NumOfCopy int
 }
